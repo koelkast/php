@@ -11,5 +11,6 @@ if node['php']['apache_conf_dir']
     end
     variables(:directives => node['php']['directives'])
     only_if { platform_family?('debian') && node['platform_version'].to_f >= 13.10 }
+    notifies :restart, 'service[apache2]'
   end
 end
