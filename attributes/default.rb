@@ -22,7 +22,6 @@ lib_dir = 'lib'
 default['php']['install_method'] = 'package'
 default['php']['directives'] = {}
 default['php']['bin'] = 'php'
-
 default['php']['pear'] = 'pear'
 default['php']['pecl'] = 'pecl'
 
@@ -41,7 +40,15 @@ when 'rhel', 'fedora'
   end
 when 'debian'
   default['php']['conf_dir']      = '/etc/php5/cli'
-  default['php']['ext_conf_dir']  = '/etc/php5/conf.d'
+  default['php']['ext_conf_dir']  = '/etc/php5/cli/conf.d'
+
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 13.10
+    default['php']['apache_conf_dir']      = '/etc/php5/apache2'
+    default['php']['apache_ext_conf_dir']  = '/etc/php5/apache2/conf.d'
+    default['php']['cgi_conf_dir']         = '/etc/php5/cgi'
+    default['php']['cgi_ext_conf_dir']     = '/etc/php5/cgi/conf.d'
+  end
+
   default['php']['fpm_user']      = 'www-data'
   default['php']['fpm_group']     = 'www-data'
   default['php']['packages']      = %w{ php5-cgi php5 php5-dev php5-cli php-pear }
